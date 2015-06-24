@@ -1,6 +1,7 @@
 var React = require('react');
 var _ = require("backbone/node_modules/underscore");
 var Backbone = require('backparse');
+var validator = require('validator');
 
 var UserModel = require('../models/UserModel');
 
@@ -14,13 +15,13 @@ module.exports = React.createClass({
 	render: function(){
 		return(
 			<form onSubmit={this.registerSubmit}>
-				<input ref="usernameInput" type="text" placeholder="Enter a Username"/>
+				<input ref="usernameInput" type="text" placeholder="Register a Username"/>
 				<span className="errors">{this.state.errors.usernameInput}</span> 
 
-				<input ref="emailInput" type="text" placeholder="Enter an Email"/>
+				<input ref="emailInput" type="text" placeholder="Register an Email"/>
 				<span className="errors">{this.state.errors.emailInput}</span> 
 
-				<input ref="passwordInput" type="text" placeholder="Enter a Password"/>
+				<input ref="passwordInput" type="text" placeholder="Register a Password"/>
 				<span className="errors">{this.state.errors.passwordInput}</span> 
 
 				<input ref="passwordConfirm" type="text" placeholder="Confirm Password"/>
@@ -43,15 +44,16 @@ module.exports = React.createClass({
 		username: this.refs.usernameInput.getDOMNode().value,
 		passwordConfirm: this.refs.passwordConfirm.getDOMNode().value
 
-	});
+	})
 
 		var user = new UserModel({
 			username: newUsername,
-			email: newPassword,
-			password: newEmail
+			password: newPassword,
+			email: newEmail, 
 		});
-		
 
+
+	
 		if(!user.get('username') || !user.get('password') || !user.get('email') || !confirm){
 
 			if(!user.get('username')){
@@ -71,5 +73,6 @@ module.exports = React.createClass({
 			this.setState({errors: errors});
 		}
 	}
-
+	
+	
 });

@@ -5,8 +5,10 @@ var Register = require('./components/registrationComponents');
 
 var App = Backbone.Router.extend({
 	routes: {
+    
 		'register':'register',
-		'login':'login'
+		'login':'login',
+
 	},
 
 	// home: function() {
