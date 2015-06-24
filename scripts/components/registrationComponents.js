@@ -54,7 +54,7 @@ module.exports = React.createClass({
 
 		if(!user.get('username') || !user.get('password') || !user.get('email') || !confirm){
 
-			if(!user.get('username)){
+			if(!user.get('username')){
 				errors.username = 'You must enter an Username';
 			}
 			if(!user.get('email')){
