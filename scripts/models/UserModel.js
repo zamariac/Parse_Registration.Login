@@ -16,7 +16,11 @@ module.exports = Backbone.Model.extend({
     },
     parseClassName: '_User',
     idAttribute: 'objectId',
-    isUser: true
+    isUser: true,
+        save: function(key, val, options) {
+        this.unset('confirmPassword');
+        return Backbone.Model.prototype.save.call(this, key, val, options);
+    }
 });
 
 

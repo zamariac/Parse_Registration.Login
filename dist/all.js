@@ -33470,6 +33470,23 @@ module.exports = require('./lib/React');
 });
 
 },{}],162:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+	render: function render() {
+		return React.createElement(
+			'div',
+			null,
+			' Maria`s Blog '
+		);
+	}
+});
+
+},{"react":160}],163:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -33525,7 +33542,101 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../models/UserModel":165,"react":160}],163:[function(require,module,exports){
+},{"../models/UserModel":167,"react":160}],164:[function(require,module,exports){
+"use strict";
+
+var React = require("react");
+
+module.exports = React.createClass({
+	displayName: "exports",
+
+	// componentWillMount: function () {
+	//     this.props.user.on('change', function() {
+	// 		this.forceUpdate();
+	// 	}, this);
+	// },
+	render: function render() {
+		// var links = [];
+		// var userDropdown = null;
+		// if(!this.props.user.id) {
+		// 	links.push(<li key="register"><a href="#register">Register</a></li>);
+		// 	links.push(<li key="login"><a href="#login">Log in</a></li>);
+		// }
+		// else {
+		// 	links.push(<li key="logout"><a href="#" onClick={this.onLogOut}>Log out</a></li>);
+		// 	userDropdown = (
+		// 		<ul className="nav navbar-nav navbar-right">
+		// 			<li className="dropdown">
+		// 				<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{this.props.user.get('username')} <span className="caret"></span></a>
+		// 				<ul className="dropdown-menu">
+		// 					<li><a href="#admin">Admin</a></li>
+		// 					<li><a href="#" onClick={this.onLogOut}>Log out</a></li>
+		// 				</ul>
+		// 			</li>
+		// 		</ul>
+		// 	);
+		// }
+		return React.createElement(
+			"nav",
+			{ className: "navbar navbar-default" },
+			React.createElement(
+				"div",
+				{ className: "container-fluid" },
+				React.createElement(
+					"div",
+					{ className: "navbar-header" },
+					React.createElement(
+						"button",
+						{ type: "button", className: "navbar-toggle collapsed", "data-toggle": "collapse", "data-target": "#bs-example-navbar-collapse-1", "aria-expanded": "false" },
+						React.createElement(
+							"span",
+							{ className: "sr-only" },
+							"Toggle navigation"
+						),
+						React.createElement("span", { className: "icon-bar" }),
+						React.createElement("span", { className: "icon-bar" }),
+						React.createElement("span", { className: "icon-bar" })
+					),
+					React.createElement(
+						"a",
+						{ className: "navbar-brand", href: "#" },
+						"Marias Blog"
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "collapse navbar-collapse", id: "bs-example-navbar-collapse-1" },
+					React.createElement(
+						"ul",
+						{ className: "nav navbar-nav" },
+						links
+					),
+					React.createElement(
+						"form",
+						{ className: "navbar-form navbar-left", role: "search" },
+						React.createElement(
+							"div",
+							{ className: "form-group" },
+							React.createElement("input", { type: "text", className: "form-control", placeholder: "Search" })
+						),
+						React.createElement(
+							"button",
+							{ type: "submit", className: "btn btn-default" },
+							"Submit"
+						)
+					),
+					userDropdown
+				)
+			)
+		);
+	}
+
+});
+// onLogOut: function() {
+// 	this.props.user.logout();
+// }
+
+},{"react":160}],165:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33612,7 +33723,7 @@ module.exports = React.createClass({
 
 });
 
-},{"../models/UserModel":165,"backbone/node_modules/underscore":2,"backparse":3,"react":160,"validator":161}],164:[function(require,module,exports){
+},{"../models/UserModel":167,"backbone/node_modules/underscore":2,"backparse":3,"react":160,"validator":161}],166:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33620,17 +33731,27 @@ var Backbone = require('backbone');
 
 var Register = require('./components/registrationComponents');
 var LogIn = require('./components/logInComponent');
+var Home = require('./components/homeComponents');
+var NavBar = require('./components/navBarcomponent');
+var UserModel = require('./models/UserModel');
+
+var NavBarEl = document.getElementById('navigation');
+React.render(React.createElement(NavBar, { user: user }), NavBarEl);
+
+var user = new UserModel();
+
 var App = Backbone.Router.extend({
    routes: {
 
+      'home': 'home',
       'register': 'register',
       'login': 'login'
 
    },
 
-   // home: function() {
-   //       React.render(<Home/>, document.querySelector('#container'));
-   //    },
+   home: function home() {
+      React.render(React.createElement(Home, null), document.querySelector('#container'));
+   },
    register: function register() {
       React.render(React.createElement(Register, null), document.querySelector('#container'));
    },
@@ -33642,9 +33763,9 @@ var App = Backbone.Router.extend({
 
 var app = new App();
 Backbone.history.start();
-app.navigate('login');
+app.navigate('home');
 
-},{"./components/logInComponent":162,"./components/registrationComponents":163,"backbone":1,"react":160}],165:[function(require,module,exports){
+},{"./components/homeComponents":162,"./components/logInComponent":163,"./components/navBarcomponent":164,"./components/registrationComponents":165,"./models/UserModel":167,"backbone":1,"react":160}],167:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backparse')({
@@ -33664,10 +33785,14 @@ module.exports = Backbone.Model.extend({
     },
     parseClassName: '_User',
     idAttribute: 'objectId',
-    isUser: true
+    isUser: true,
+    save: function save(key, val, options) {
+        this.unset('confirmPassword');
+        return Backbone.Model.prototype.save.call(this, key, val, options);
+    }
 });
 
-},{"backparse":3,"jquery":5,"validator":161}]},{},[164])
+},{"backparse":3,"jquery":5,"validator":161}]},{},[166])
 
 
 //# sourceMappingURL=all.js.map
