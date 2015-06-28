@@ -8,7 +8,7 @@ var UserModel = require('../models/UserModel');
 
 module.exports = React.createClass({	
 	getInitialState: function(){
-		return{
+		return {
 			errors:{}
 		};
 	},
@@ -38,18 +38,13 @@ module.exports = React.createClass({
 		e.preventDefault();
 
 		var errors = {};
-		var newUser = new UserModel({
-		email: this.refs.emailInput.getDOMNode().value,
-		password: this.refs.passwordInput.getDOMNode().value,
-		username: this.refs.usernameInput.getDOMNode().value,
-		passwordConfirm: this.refs.passwordConfirm.getDOMNode().value
-
-	})
-
 		var user = new UserModel({
-			username: newUsername,
-			password: newPassword,
-			email: newEmail, 
+			email: this.refs.emailInput.getDOMNode().value,
+			password: this.refs.passwordInput.getDOMNode().value,
+			username: this.refs.usernameInput.getDOMNode().value,
+			passwordConfirm: this.refs.passwordConfirm.getDOMNode().value
+
+	
 		});
 
 
@@ -70,7 +65,7 @@ module.exports = React.createClass({
 			}
 
 		} else {
-			this.setState({errors: errors});
+			user.save();
 		}
 	}
 	

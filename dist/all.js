@@ -33470,6 +33470,62 @@ module.exports = require('./lib/React');
 });
 
 },{}],162:[function(require,module,exports){
+"use strict";
+
+var React = require("react");
+var UserModel = require("../models/UserModel");
+
+module.exports = React.createClass({
+	displayName: "exports",
+
+	getInitialState: function getInitialState() {
+		return {
+			errors: {}
+		};
+	},
+
+	render: function render() {
+		return React.createElement(
+			"form",
+			{ onSubmit: this.loginSubmit },
+			React.createElement("input", { ref: "usernameInput", type: "text", placeholder: "Enter a Username" }),
+			React.createElement(
+				"span",
+				{ className: "errors" },
+				this.state.errors.usernameInput
+			),
+			React.createElement("input", { ref: "emailInput", type: "text", placeholder: "Enter an Email" }),
+			React.createElement(
+				"span",
+				{ className: "errors" },
+				this.state.errors.emailInput
+			),
+			React.createElement("input", { ref: "passwordInput", type: "text", placeholder: "Enter a Password" }),
+			React.createElement(
+				"span",
+				{ className: "errors" },
+				this.state.errors.passwordInput
+			),
+			React.createElement("input", { ref: "passwordConfirm", type: "text", placeholder: "Confirm Password" }),
+			React.createElement(
+				"span",
+				{ className: "errors" },
+				this.state.errors.passwordConfirm
+			),
+			React.createElement(
+				"button",
+				{ type: "submit" },
+				"Submit"
+			)
+		);
+	},
+
+	validateLogIn: function validateLogIn(e) {
+		e.preventDefault();
+	}
+});
+
+},{"../models/UserModel":165,"react":160}],163:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33527,18 +33583,12 @@ module.exports = React.createClass({
 		e.preventDefault();
 
 		var errors = {};
-		var newUser = new UserModel({
+		var user = new UserModel({
 			email: this.refs.emailInput.getDOMNode().value,
 			password: this.refs.passwordInput.getDOMNode().value,
 			username: this.refs.usernameInput.getDOMNode().value,
 			passwordConfirm: this.refs.passwordConfirm.getDOMNode().value
 
-		});
-
-		var user = new UserModel({
-			username: newUsername,
-			password: newPassword,
-			email: newEmail
 		});
 
 		if (!user.get('username') || !user.get('password') || !user.get('email') || !confirm) {
@@ -33556,20 +33606,20 @@ module.exports = React.createClass({
 				errors.passwordConfirm = 'You must confirm Password';
 			}
 		} else {
-			this.setState({ errors: errors });
+			user.save();
 		}
 	}
 
 });
 
-},{"../models/UserModel":164,"backbone/node_modules/underscore":2,"backparse":3,"react":160,"validator":161}],163:[function(require,module,exports){
+},{"../models/UserModel":165,"backbone/node_modules/underscore":2,"backparse":3,"react":160,"validator":161}],164:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var Backbone = require('backbone');
 
 var Register = require('./components/registrationComponents');
-
+var LogIn = require('./components/logInComponent');
 var App = Backbone.Router.extend({
    routes: {
 
@@ -33584,7 +33634,7 @@ var App = Backbone.Router.extend({
    register: function register() {
       React.render(React.createElement(Register, null), document.querySelector('#container'));
    },
-   logIn: function logIn() {
+   login: function login() {
       React.render(React.createElement(LogIn, null), document.querySelector('#container'));
    }
 
@@ -33592,9 +33642,9 @@ var App = Backbone.Router.extend({
 
 var app = new App();
 Backbone.history.start();
-app.navigate('home');
+app.navigate('login');
 
-},{"./components/registrationComponents":162,"backbone":1,"react":160}],164:[function(require,module,exports){
+},{"./components/logInComponent":162,"./components/registrationComponents":163,"backbone":1,"react":160}],165:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backparse')({
@@ -33617,7 +33667,7 @@ module.exports = Backbone.Model.extend({
     isUser: true
 });
 
-},{"backparse":3,"jquery":5,"validator":161}]},{},[163])
+},{"backparse":3,"jquery":5,"validator":161}]},{},[164])
 
 
 //# sourceMappingURL=all.js.map
