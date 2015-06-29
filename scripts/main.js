@@ -7,10 +7,10 @@ var Home = require('./components/homeComponents');
 var NavBar = require ('./components/navBarcomponent');
 var UserModel = require('./models/UserModel');
 
-var NavBarEl= document.getElementById('navigation');
-React.render(<NavBar user={user} />, NavBarEl);
+// var NavBarEl= document.getElementById('navigation');
+// React.render(<NavBar user={user} />, NavBarEl);
 
-
+React.render(<NavBar/>, document.querySelector('#container'));
 
 var user = new UserModel();
 
